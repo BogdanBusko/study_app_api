@@ -23,18 +23,18 @@ RSpec.describe Api::V1::SessionsController, type: :request do
 
   describe 'DELETE #destroy' do
     it 'returns status 401 if user token is invalid' do
-      delete '/api/v1/sessions', headers: { 'Authorization' => SecureRandom.uuid }
+      delete '/api/v1/sessions', headers: { "Authorization" => SecureRandom.uuid }
 
       expect(response).to have_http_status(401)
     end
 
     it 'updates user token' do
       expect do
-        delete '/api/v1/sessions', headers: { 'Authorization' => "Bearer #{user.token}" }
+        delete '/api/v1/sessions', headers: { "Authorization" => "Bearer #{user.token}" }
         user.reload
       end.to change(user, :token)
 
-      expect(response).to have_http_status(204)
+      expect(response).to have_http_status(200)
     end
   end
 end
