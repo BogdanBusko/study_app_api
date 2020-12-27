@@ -9,7 +9,7 @@ RSpec.describe Api::V1::RegistrationController do
         }
       end.to change(User, :count).by(1)
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(201)
     end
 
     it 'returns errors if data is not valid' do
@@ -24,7 +24,8 @@ RSpec.describe Api::V1::RegistrationController do
         }
       end.to change(User, :count).by(0)
 
-      expect(JSON.parse(response.body)['errors'].count).to eq(2)
+      expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(2)
+      expect(response).to have_http_status(422)
     end
   end
 end
