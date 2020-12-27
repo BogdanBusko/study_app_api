@@ -3,9 +3,11 @@ class Api::V1::RegistrationController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      render json: SessionSerializer.new(user), status: 200
+      head(:ok)
     else
-      render json: ErrorsSerializer.new(user), status: 400
+      render json: {
+        errors: user.errors.full_messages
+      }
     end
   end
 
