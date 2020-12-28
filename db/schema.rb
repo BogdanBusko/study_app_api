@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_215834) do
+ActiveRecord::Schema.define(version: 2020_12_29_072605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.string "logo"
+    t.bigint "author_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_organizations_on_author_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -25,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_12_22_215834) do
     t.string "first_name"
     t.string "last_name"
     t.string "photo"
-    t.integer "role", default: 0
+    t.string "role", default: "user"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "token", default: -> { "gen_random_uuid()" }
@@ -34,4 +43,5 @@ ActiveRecord::Schema.define(version: 2020_12_22_215834) do
     t.index ["token"], name: "index_users_on_token", unique: true
   end
 
+  add_foreign_key "organizations", "users", column: "author_id"
 end
