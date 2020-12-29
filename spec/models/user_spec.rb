@@ -20,6 +20,7 @@
 #
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_role                  (role)
 #  index_users_on_token                 (token) UNIQUE
 #
 require 'rails_helper'
@@ -34,5 +35,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:password) }
+
+    it { is_expected.to validate_inclusion_of(:role).in_array(User::ROLES) }
   end
 end
