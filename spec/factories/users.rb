@@ -11,7 +11,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  role                   :integer          default("user")
+#  role                   :string           default("user")
 #  token                  :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -30,7 +30,7 @@ FactoryBot.define do
     password { SecureRandom.hex(10) }
 
     trait :admin do
-      role { :admin }
+      role { User::ADMIN }
     end
   end
 end

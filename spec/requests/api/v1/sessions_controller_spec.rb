@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Api::V1::SessionsController, type: :request do
-  let!(:user) { create(:user, password: '123456', token: SecureRandom.uuid) }
+  let!(:user) { create(:user, password: '123456') }
 
   describe 'POST #create' do
     it 'returns status 401 if some of credentials is invalid' do
@@ -19,20 +19,25 @@ RSpec.describe Api::V1::SessionsController, type: :request do
         password: '123456'
       }
 
+      user.reload
+
       expect(response).to have_http_status(201)
+      expect(JSON.parse(response.body)['data']['attributes']['token']).to eq(user.token)
     end
   end
 
   describe 'DELETE #destroy' do
+    let!(:user) { create(:user, token: SecureRandom.uuid) }
+
     it 'returns status 401 if user token is invalid' do
-      delete '/api/v1/sessions', headers: { 'Authorization' => SecureRandom.uuid }
+      delete '/api/v1/sessions', headers: { 'Authorization': SecureRandom.uuid }
 
       expect(response).to have_http_status(401)
     end
 
     it 'updates user token' do
       expect do
-        delete '/api/v1/sessions', headers: { 'Authorization' => "Bearer #{user.token}" }
+        delete '/api/v1/sessions', headers: { 'Authorization': "Bearer #{user.token}" }
         user.reload
       end.to change(user, :token)
 

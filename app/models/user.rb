@@ -11,7 +11,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  role                   :integer          default("user")
+#  role                   :string           default("user")
 #  token                  :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -26,7 +26,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum role: [:user, :admin]
+  ADMIN = 'admin'.freeze
+  USER = 'user'.freeze
+  ROLES = [USER, ADMIN].freeze
+
+  has_many :own_organizations, foreign_key: 'author_id', class_name: 'Organization'
 
   validates :first_name, :last_name, presence: true
 

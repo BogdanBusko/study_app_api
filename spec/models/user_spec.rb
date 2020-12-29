@@ -11,7 +11,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  role                   :integer          default("user")
+#  role                   :string           default("user")
 #  token                  :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -25,6 +25,10 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'associations' do
+    it { is_expected.to have_many(:own_organizations).with_foreign_key(:author_id).class_name('Organization') }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of(:first_name) }
     it { is_expected.to validate_presence_of(:last_name) }
