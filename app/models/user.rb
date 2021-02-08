@@ -20,6 +20,7 @@
 #
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_role                  (role)
 #  index_users_on_token                 (token) UNIQUE
 #
 class User < ApplicationRecord
@@ -30,9 +31,13 @@ class User < ApplicationRecord
   USER = 'user'.freeze
   ROLES = [USER, ADMIN].freeze
 
-  has_many :own_organizations, foreign_key: 'author_id', class_name: 'Organization'
+  has_many :own_organizations, foreign_key: 'author_id',
+                               class_name: 'Organization'
+  has_many :user_organizations
+  has_many :organizations, through: :user_organizations
 
   validates :first_name, :last_name, presence: true
+  validates :role, inclusion: { in: ROLES }
 
   def update_token!
     token = SecureRandom.uuid

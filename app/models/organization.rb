@@ -19,6 +19,8 @@
 #
 class Organization < ApplicationRecord
   belongs_to :author, class_name: 'User'
+  has_many :user_organizations
+  has_many :users, through: :user_organizations
 
   validates :name, presence: true
 end
