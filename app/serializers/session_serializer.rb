@@ -1,5 +1,9 @@
 class SessionSerializer
   include JSONAPI::Serializer
 
-  attribute :token
+  attributes :token
+
+  attribute :user do |user|
+    UserSerializer.new(user)
+  end
 end
