@@ -4,9 +4,9 @@
 #
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
 #  first_name             :string
 #  last_name              :string
+#  password_digest        :string           default(""), not null
 #  photo                  :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -25,8 +25,7 @@
 require 'json_web_token'
 
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  has_secure_password
 
   ADMIN = 'admin'.freeze
   USER = 'user'.freeze
@@ -35,6 +34,8 @@ class User < ApplicationRecord
   has_many :own_organizations, foreign_key: 'author_id', class_name: 'Organization'
 
   validates :first_name, :last_name, presence: true
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, presence: true, length: { minimum: 6, maximum: 16 }
 
   def update_token!
     token = SecureRandom.uuid
@@ -49,6 +50,6 @@ class User < ApplicationRecord
   end
 
   def token
-    JsonWebToken.encode(id)
+    JsonWebToken.encode({ user_id: id })
   end
 end

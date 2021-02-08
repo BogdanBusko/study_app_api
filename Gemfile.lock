@@ -75,12 +75,6 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    devise (4.7.3)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
-      responders
-      warden (~> 1.2.3)
     diff-lcs (1.4.4)
     erubi (1.10.0)
     factory_bot (6.1.0)
@@ -118,7 +112,6 @@ GEM
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    orm_adapter (0.5.0)
     pg (1.2.3)
     pry (0.13.1)
       coderay (~> 1.1)
@@ -161,9 +154,6 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.1)
@@ -194,8 +184,6 @@ GEM
     thor (1.1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    warden (1.2.9)
-      rack (>= 2.0.9)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -206,10 +194,10 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  bcrypt
   bootsnap (>= 1.4.4)
   byebug
   database_cleaner-active_record
-  devise
   factory_bot_rails
   faker
   jsonapi-serializer

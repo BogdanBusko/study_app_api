@@ -24,7 +24,7 @@ RSpec.describe Api::V1::RegistrationController do
         }
       end.to change(User, :count).by(0)
 
-      expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(2)
+      expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(3)
       expect(response).to have_http_status(422)
     end
   end

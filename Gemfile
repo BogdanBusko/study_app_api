@@ -8,9 +8,9 @@ gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rack-cors'
-gem 'devise'
 gem 'jsonapi-serializer'
 gem 'jwt'
+gem 'bcrypt'
 
 group :development, :test do
   gem 'pry'

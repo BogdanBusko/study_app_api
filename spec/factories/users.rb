@@ -4,9 +4,9 @@
 #
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
 #  first_name             :string
 #  last_name              :string
+#  password_digest        :string           default(""), not null
 #  photo                  :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -26,7 +26,7 @@ FactoryBot.define do
     email { Faker::Internet.unique.email }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    password { SecureRandom.hex(10) }
+    password { Faker::Internet.password(min_length: 6, max_length: 16) }
 
     trait :admin do
       role { User::ADMIN }
