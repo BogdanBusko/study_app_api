@@ -10,10 +10,4 @@ class Api::V1::SessionsController < Api::V1::BaseController
       head(:unauthorized)
     end
   end
-
-  def destroy
-    current_user.update_token!
-
-    head(:no_content)
-  end
 end

@@ -12,7 +12,6 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  role                   :string           default("user")
-#  token                  :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -20,7 +19,7 @@
 #
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#  index_users_on_token                 (token) UNIQUE
+#  index_users_on_role                  (role)
 #
 require 'rails_helper'
 
@@ -34,5 +33,21 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:password) }
+  end
+
+  describe 'methods' do
+   let!(:user) { create(:user) }
+
+    describe '#full_name' do
+      it 'returns user full_name' do
+        expect(user.full_name).to eq([user.first_name, user.last_name].join(' '))
+      end
+    end
+
+    describe '#token' do
+      it 'returns user id as encoded token' do
+        expect(user.token).to_not be_nil
+      end
+    end
   end
 end
