@@ -21,6 +21,9 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_role                  (role)
 #
+
+require 'json_web_token'
+
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

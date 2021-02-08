@@ -10,6 +10,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rack-cors'
 gem 'devise'
 gem 'jsonapi-serializer'
+gem 'jwt'
 
 group :development, :test do
   gem 'pry'
@@ -19,6 +20,7 @@ group :development, :test do
   gem 'annotate'
   gem 'shoulda-matchers'
   gem 'database_cleaner-active_record'
+  gem 'byebug'
 end
 
 group :development do

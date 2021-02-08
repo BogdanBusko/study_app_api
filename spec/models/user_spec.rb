@@ -34,4 +34,20 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:password) }
   end
+
+  describe 'methods' do
+   let!(:user) { create(:user) }
+
+    describe '#full_name' do
+      it 'returns user full_name' do
+        expect(user.full_name).to eq([user.first_name, user.last_name].join(' '))
+      end
+    end
+
+    describe '#token' do
+      it 'returns user id as encoded token' do
+        expect(user.token).to_not be_nil
+      end
+    end
+  end
 end

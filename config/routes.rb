@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :account do
         resources :profiles, only: :show
+        resources :organizations, only: :create
       end
 
       resource :sessions, only: [:create, :destroy]

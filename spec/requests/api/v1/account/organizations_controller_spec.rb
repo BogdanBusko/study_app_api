@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Api::V1::Account::OrganizationsController, type: :request do
-  let!(:user) { create(:user, token: SecureRandom.uuid) }
+  let!(:user) { create(:user) }
 
   describe 'POST #create' do
     it 'creates organization' do

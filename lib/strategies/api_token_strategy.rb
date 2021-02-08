@@ -1,10 +1,12 @@
+require 'json_web_token'
+
 class ApiTokenStrategy < Warden::Strategies::Base
   def valid?
     api_token.present?
   end
 
   def authenticate!
-    user = User.find_by(token: api_token)
+    user = User.find(JsonWebToken.decode(api_token))
 
     if user
       success!(user)

@@ -6,8 +6,10 @@ RSpec.describe Api::V1::SessionsController, type: :request do
   describe 'POST #create' do
     it 'returns status 401 if some of credentials is invalid' do
       post '/api/v1/sessions', params: {
-        email: user.email,
-        password: '12356'
+        session: {
+          email: user.email,
+          password: '12356'
+        }
       }
 
       expect(response).to have_http_status(401)
@@ -15,33 +17,14 @@ RSpec.describe Api::V1::SessionsController, type: :request do
 
     it 'returns user token if credentials valid' do
       post '/api/v1/sessions', params: {
-        email: user.email,
-        password: '123456'
+        session: {
+          email: user.email,
+          password: '123456'
+        }
       }
 
-      user.reload
-
       expect(response).to have_http_status(201)
-      expect(JSON.parse(response.body)['data']['attributes']['token']).to eq(user.token)
-    end
-  end
-
-  describe 'DELETE #destroy' do
-    let!(:user) { create(:user, token: SecureRandom.uuid) }
-
-    it 'returns status 401 if user token is invalid' do
-      delete '/api/v1/sessions', headers: { 'Authorization': SecureRandom.uuid }
-
-      expect(response).to have_http_status(401)
-    end
-
-    it 'updates user token' do
-      expect do
-        delete '/api/v1/sessions', headers: { 'Authorization': "Bearer #{user.token}" }
-        user.reload
-      end.to change(user, :token)
-
-      expect(response).to have_http_status(204)
+      expect(JSON.parse(response.body)['data']['attributes']['token']).to_not be_nil
     end
   end
 end
