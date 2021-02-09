@@ -37,14 +37,6 @@ class User < ApplicationRecord
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, length: { minimum: 6, maximum: 16 }
 
-  def update_token!
-    token = SecureRandom.uuid
-
-    set_token! if User.find_by(token: token).present?
-
-    update(token: token)
-  end
-
   def full_name
     [first_name, last_name].join(' ')
   end
