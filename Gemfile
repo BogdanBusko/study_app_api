@@ -21,6 +21,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner-active_record'
   gem 'byebug'
+  gem 'simplecov', require: false
 end
 
 group :development do
