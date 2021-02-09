@@ -4,9 +4,9 @@
 #
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
 #  first_name             :string
 #  last_name              :string
+#  password_digest        :string           default(""), not null
 #  photo                  :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime

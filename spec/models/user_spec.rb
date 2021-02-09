@@ -4,9 +4,9 @@
 #
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
 #  first_name             :string
 #  last_name              :string
+#  password_digest        :string           default(""), not null
 #  photo                  :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -32,7 +32,11 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:first_name) }
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to allow_value('john.doe@email.com').for(:email) }
+    it { is_expected.to_not allow_value('john.doeemail.com').for(:email) }
     it { is_expected.to validate_presence_of(:password) }
+    it { is_expected.to validate_length_of(:password).is_at_least(6) }
+    it { is_expected.to validate_length_of(:password).is_at_most(16) }
   end
 
   describe 'methods' do
