@@ -4,27 +4,40 @@ RSpec.describe Api::V1::SessionsController, type: :request do
   let!(:user) { create(:user, password: '123456') }
 
   describe 'POST #create' do
-    it 'returns status 401 if some of credentials is invalid' do
-      post '/api/v1/sessions', params: {
-        session: {
-          email: user.email,
-          password: '12356'
-        }
-      }
-
-      expect(response).to have_http_status(401)
+    before do
+      post '/api/v1/sessions', params: params
     end
 
-    it 'returns user token if credentials valid' do
-      post '/api/v1/sessions', params: {
-        session: {
-          email: user.email,
-          password: '123456'
-        }
-      }
+    subject { response }
 
-      expect(response).to have_http_status(201)
-      expect(JSON.parse(response.body)['data']['attributes']['token']).to_not be_nil
+    context 'with invalid params' do
+      let!(:params) do
+        {
+          session: {
+            email: user.email,
+            password: '12356'
+          }
+        }
+      end
+
+      it { is_expected.to have_http_status(401) }
+    end
+
+    context 'with valid params' do
+      let!(:params) do
+        {
+          session: {
+            email: user.email,
+            password: '123456'
+          }
+        }
+      end
+
+      it { is_expected.to have_http_status(201) }
+
+      it 'returns user token if credentials valid' do
+        expect(JSON.parse(subject.body)['data']['attributes']['token']).to_not be_nil
+      end
     end
   end
 end

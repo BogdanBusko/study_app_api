@@ -6,13 +6,22 @@ RSpec.describe AuthSession do
   let!(:request) { double('request') }
 
   before do
-    token = JsonWebToken.encode({ user_id: 1 })
     allow(request).to receive(:headers).and_return({ 'Authorization': token }.stringify_keys)
   end
 
   describe '#user_id' do
-    it 'returns user id' do
-      expect(AuthSession.new(request).user_id).to eq(1)
+    subject { AuthSession.new(request).user_id }
+
+    context 'with valid token' do
+      let!(:token) { JsonWebToken.encode({ user_id: 1 }) }
+
+      it { is_expected.to eq(1) }
+    end
+
+    context 'with invalid token' do
+      let!(:token) { SecureRandom.hex(10) }
+
+      it { is_expected.to be_nil }
     end
   end
 end

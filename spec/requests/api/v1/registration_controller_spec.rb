@@ -2,30 +2,40 @@ require "rails_helper"
 
 RSpec.describe Api::V1::RegistrationController do
   describe 'POST #create' do
-    it 'register new user' do
-      expect do
-        post '/api/v1/registration', params: {
-          user: attributes_for(:user)
-        }
-      end.to change(User, :count).by(1)
+    subject { post '/api/v1/registration', params: params }
 
-      expect(response).to have_http_status(201)
+    context 'with valid params' do
+      let(:params) { { user: attributes_for(:user) } }
+
+      it 'returns status accepted' do
+        subject
+
+        expect(response).to have_http_status(201)
+      end
+
+      it 'creates user' do
+        expect { subject }.to change(User, :count).by(1)
+      end
     end
 
-    it 'returns errors if data is not valid' do
-      expect do
-        post '/api/v1/registration', params: {
-          user: {
-            first_name: '',
-            last_name: '',
-            password: SecureRandom.hex(10),
-            email: Faker::Internet.email
-          }
-        }
-      end.to change(User, :count).by(0)
+    context 'with invalid params' do
+      let(:params) { { user: attributes_for(:user, first_name: nil, last_name: nil) } }
 
-      expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(3)
-      expect(response).to have_http_status(422)
+      it 'returns status accepted' do
+        subject
+
+        expect(response).to have_http_status(422)
+      end
+
+      it 'creates user' do
+        expect { subject }.to change(User, :count).by(0)
+      end
+
+      it 'returns 2 errors' do
+        subject
+
+        expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(2)
+      end
     end
   end
 end

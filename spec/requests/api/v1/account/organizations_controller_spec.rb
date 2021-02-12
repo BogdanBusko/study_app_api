@@ -4,25 +4,37 @@ RSpec.describe Api::V1::Account::OrganizationsController, type: :request do
   let!(:user) { create(:user) }
 
   describe 'POST #create' do
-    it 'creates organization' do
-      expect do
-        post '/api/v1/account/organizations', params: {
-          organization: attributes_for(:organization)
-        }, headers: { 'Authorization': user.token }
-      end.to change(Organization, :count).by(1)
-
-      expect(response).to have_http_status(204)
+    subject do
+      post '/api/v1/account/organizations',
+           params: request_params,
+           headers: { 'Authorization': user.token }
     end
 
-    it 'returns errors if some of params is invalid' do
-      post '/api/v1/account/organizations', params: {
-        organization: {
-          name: nil
-        }
-      }, headers: { 'Authorization': user.token }
+    context 'with valid params' do
+      let!(:request_params) { { organization: attributes_for(:organization) } }
 
-      expect(response).to have_http_status(422)
-      expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(1)
+      it 'returns no content status' do
+        subject
+        expect(response).to have_http_status(204)
+      end
+
+      it { expect { subject }.to change(Organization, :count).by(1) }
+    end
+
+    context 'with invalid params' do
+      let!(:request_params) { { organization: attributes_for(:organization, name: nil) } }
+
+      it 'returns unprocessible entity status' do
+        subject
+        expect(response).to have_http_status(422)
+      end
+
+      it { expect { subject }.to change(Organization, :count).by(0) }
+
+      it 'returns errors' do
+        subject
+        expect(JSON.parse(response.body)['data']['attributes']['errors'].count).to eq(1)
+      end
     end
   end
 end

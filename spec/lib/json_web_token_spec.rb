@@ -7,21 +7,23 @@ RSpec.describe JsonWebToken do
   describe '.encode' do
     subject { JsonWebToken.encode(user.id) }
 
-    it 'converts user ID in to token' do
-      is_expected.to_not be_nil
-      is_expected.to_not eq(user.id)
-    end
+    it { is_expected.to_not be_nil }
+    it { is_expected.to_not eq(user.id) }
   end
 
   describe '.decode' do
-    let!(:token) { JsonWebToken.encode(user.id) }
+    subject { JsonWebToken.decode(token) }
 
-    it 'returns decoded token' do
-      expect(JsonWebToken.decode(token)).to eq(user.id)
+    context 'with valid token' do
+      let!(:token) { JsonWebToken.encode(user.id) }
+
+      it { is_expected.to eq(user.id) }
     end
 
-    it 'returns nil if user token is invalid' do
-      expect(JsonWebToken.decode(SecureRandom.hex(16))).to eq(nil)
+    context 'with invalid token' do
+      let!(:token) { SecureRandom.hex(16) }
+
+      it { is_expected.to be_nil }
     end
   end
 end
