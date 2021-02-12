@@ -8,14 +8,14 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
+    return unless current_session.user_id
+
     @current_user ||= User.find(current_session.user_id)
   end
 
   private
 
   def authenticate_user!
-    return if current_user
-
-    head(:unauthorized)
+    head(:unauthorized) unless current_user
   end
 end
