@@ -25,17 +25,6 @@ ActiveRecord::Schema.define(version: 2021_02_08_203852) do
     t.index ["author_id"], name: "index_organizations_on_author_id"
   end
 
-  create_table "user_organizations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "organization_id", null: false
-    t.string "role", default: "member"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["organization_id"], name: "index_user_organizations_on_organization_id"
-    t.index ["role"], name: "index_user_organizations_on_role"
-    t.index ["user_id"], name: "index_user_organizations_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "password_digest", default: "", null: false
@@ -50,10 +39,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_203852) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "organizations", "users", column: "author_id"
-  add_foreign_key "user_organizations", "organizations"
-  add_foreign_key "user_organizations", "users"
 end

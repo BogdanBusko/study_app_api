@@ -1,8 +1,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
-
 gem 'rails', '~> 6.1.0'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
@@ -11,6 +9,7 @@ gem 'rack-cors'
 gem 'jsonapi-serializer'
 gem 'jwt'
 gem 'bcrypt'
+gem 'dotenv-rails'
 
 group :development, :test do
   gem 'pry'
