@@ -33,7 +33,7 @@ class User < ApplicationRecord
   has_many :own_organizations, foreign_key: 'author_id', class_name: 'Organization'
 
   validates :first_name, :last_name, presence: true
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6, maximum: 16 }
 
   def full_name
