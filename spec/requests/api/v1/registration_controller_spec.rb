@@ -5,7 +5,7 @@ RSpec.describe Api::V1::RegistrationController do
     subject { post '/api/v1/registration', params: params }
 
     context 'with valid params' do
-      let(:params) { { user: attributes_for(:user) } }
+      let!(:params) { { registration: attributes_for(:user) } }
 
       it 'returns status accepted' do
         subject
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::RegistrationController do
     end
 
     context 'with invalid params' do
-      let(:params) { { user: attributes_for(:user, first_name: nil, last_name: nil) } }
+      let!(:params) { { registration: attributes_for(:user, first_name: nil, last_name: nil) } }
 
       it 'returns status accepted' do
         subject

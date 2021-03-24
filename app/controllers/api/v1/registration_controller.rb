@@ -3,7 +3,7 @@ class Api::V1::RegistrationController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      render json: SessionSerializer.new(user), status: 201
+      render json: RegistrationSerializer.new(user), status: 201
     else
       render json: ErrorsSerializer.new(user), status: 422
     end
@@ -12,6 +12,9 @@ class Api::V1::RegistrationController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+    params.require(:registration).permit(
+      :first_name, :last_name, :email,
+      :password, :password_confirmation
+    )
   end
 end
