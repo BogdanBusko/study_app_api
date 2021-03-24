@@ -4,6 +4,32 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/v1/account/profile":
+    get:
+      summary: Profile
+      tags:
+      - User profile
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              example:
+                data:
+                  id: 1
+                  type: profile
+                  attribute:
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    email: john.doe@email.com
+        '401':
+          description: unauthorized
   "/api/v1/registration":
     post:
       summary: Sign Up
@@ -12,7 +38,7 @@ paths:
       parameters: []
       responses:
         '201':
-          description: successful
+          description: created
           content:
             application/json:
               example:

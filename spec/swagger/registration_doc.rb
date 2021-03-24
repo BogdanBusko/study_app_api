@@ -1,6 +1,6 @@
 require 'swagger_helper'
 
-RSpec.describe 'api/v1/registration', type: :request do
+RSpec.describe '/api/v1/registration', type: :request do
   path '/api/v1/registration' do
     post 'Sign Up' do
       tags 'Registration'
@@ -21,7 +21,7 @@ RSpec.describe 'api/v1/registration', type: :request do
                   }
                 }
 
-      response 201, 'successful' do
+      response 201, 'created' do
         let(:registration) { attributes_for(:user) }
 
         examples 'application/json' => {
