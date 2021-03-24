@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/registration', type: :request do
   path '/api/v1/registration' do
-    post 'create registration'  do
+    post 'Sign Up' do
       tags 'Registration'
       consumes 'application/json'
       parameter name: :registration, in: :body, schema: {
@@ -20,13 +20,8 @@ RSpec.describe 'api/v1/registration', type: :request do
                     }
                   }
                 }
-      examples 'application/json' => {
-                 registration: {
-                   first_name: 'John Doe'
-                 }
-               }
 
-      response 200, 'successful' do
+      response 201, 'successful' do
         let(:registration) { attributes_for(:user) }
 
         examples 'application/json' => {
@@ -40,7 +35,21 @@ RSpec.describe 'api/v1/registration', type: :request do
         run_test!
       end
 
-      response
+      response 422, 'Unprocessable Entity' do
+        let(:registration) do
+          {
+            first_name: nil,
+            last_name: nil,
+            email: nil,
+            password: nil,
+            password_confirmation: nil
+          }
+        end
+
+        examples 'application/json' => error_response_for(:registration)
+
+        run_test!
+      end
     end
   end
 end
