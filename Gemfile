@@ -10,6 +10,7 @@ gem 'jsonapi-serializer'
 gem 'jwt'
 gem 'bcrypt'
 gem 'dotenv-rails'
+gem 'rswag'
 
 group :development, :test do
   gem 'pry'
