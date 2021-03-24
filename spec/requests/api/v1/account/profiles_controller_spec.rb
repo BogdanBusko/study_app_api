@@ -7,12 +7,13 @@ RSpec.describe Api::V1::Account::ProfilesController do
     let!(:user_response) do
       {
         data: {
-          type: 'user',
+          type: 'profile',
           id: user.id.to_s,
           attributes: {
             first_name: user.first_name,
             last_name: user.last_name,
-            full_name: user.full_name
+            full_name: user.full_name,
+            email: user.email
           }
         }
       }.deep_stringify_keys
