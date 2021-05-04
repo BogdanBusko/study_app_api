@@ -24,7 +24,9 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'associations' do
-    it { is_expected.to have_many(:own_organizations).with_foreign_key(:author_id).class_name('Organization') }
+    it { is_expected.to have_many(:own_organizations).with_foreign_key(:owner_id).class_name('Organization') }
+    it { is_expected.to have_many(:user_organizations) }
+    it { is_expected.to have_many(:organizations).through(:user_organizations) }
   end
 
   describe 'validations' do
@@ -49,7 +51,7 @@ RSpec.describe User, type: :model do
     end
 
     describe '#token' do
-      it 'returns user id as encoded token' do
+      it 'returns token' do
         expect(user.token).to_not be_nil
       end
     end

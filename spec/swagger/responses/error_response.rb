@@ -3,6 +3,8 @@ module SwaggerResponses
     case endpoint
     when :registration
       registration_error_response
+    when :profile
+      profile_error_response
     else
       raise ArgumentError
     end
@@ -28,6 +30,12 @@ module SwaggerResponses
       last_name: ['can\'t be blank'],
       email: ['can\'t be blank'],
       password: ['can\'t be blank']
+    })
+  end
+
+  def profile_error_response
+    errors_template({
+      first_name: ['can\'t be blank']
     })
   end
 end

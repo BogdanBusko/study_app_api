@@ -7,19 +7,19 @@
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  author_id  :bigint           not null
+#  owner_id   :bigint
 #
 # Indexes
 #
-#  index_organizations_on_author_id  (author_id)
+#  index_organizations_on_owner_id  (owner_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (owner_id => users.id)
 #
 FactoryBot.define do
   factory :organization do
-    association :author, factory: :user
+    association :owner, factory: :user
 
     name { Faker::Lorem.sentence }
     logo { nil }

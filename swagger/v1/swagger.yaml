@@ -4,11 +4,37 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/v1/account/profile":
+  "/api/v1/account/organizations":
     get:
-      summary: Profile
+      summary: List of Organizations
       tags:
-      - User profile
+      - Organization
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              example:
+                data:
+                - id: '1'
+                  type: organization
+                  attributes:
+                    id: 1
+                    name: Organization name
+                - id: '2'
+                  type: organization
+                  attributes:
+                    id: 2
+                    name: Organization name
+    post:
+      summary: Create Organization
+      tags:
+      - Organization
       parameters:
       - name: Authorization
         in: header
@@ -30,6 +56,84 @@ paths:
                     email: john.doe@email.com
         '401':
           description: unauthorized
+  "/api/v1/account/profile":
+    get:
+      summary: User profile
+      tags:
+      - Profile
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              example:
+                data:
+                  id: 1
+                  type: profile
+                  attribute:
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    email: john.doe@email.com
+        '401':
+          description: unauthorized
+    patch:
+      summary: Update user profile
+      tags:
+      - Profile
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: profile updated
+          content:
+            application/json:
+              example:
+                data:
+                  id: 1
+                  type: profile
+                  attribute:
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    email: john.doe@email.com
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              example:
+                data:
+                  id: 1
+                  type: errors
+                  attributes:
+                    errors:
+                      first_name:
+                      - can't be blank
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
   "/api/v1/registration":
     post:
       summary: Sign Up

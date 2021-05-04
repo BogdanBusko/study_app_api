@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Api::V1::Account::AccountController do
   context 'check authenticate_user! callback' do
     before do
-      get '/api/v1/account/profiles', **options
+      get '/api/v1/account/profile', **options
     end
 
     subject { response }

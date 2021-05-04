@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_203852) do
+ActiveRecord::Schema.define(version: 2021_04_25_130046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -19,10 +19,20 @@ ActiveRecord::Schema.define(version: 2021_02_08_203852) do
   create_table "organizations", force: :cascade do |t|
     t.string "name"
     t.string "logo"
-    t.bigint "author_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_id"], name: "index_organizations_on_author_id"
+    t.bigint "owner_id"
+    t.index ["owner_id"], name: "index_organizations_on_owner_id"
+  end
+
+  create_table "user_organizations", force: :cascade do |t|
+    t.string "role", default: "member"
+    t.bigint "user_id"
+    t.bigint "organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_user_organizations_on_organization_id"
+    t.index ["user_id"], name: "index_user_organizations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,5 +51,5 @@ ActiveRecord::Schema.define(version: 2021_02_08_203852) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "organizations", "users", column: "author_id"
+  add_foreign_key "organizations", "users", column: "owner_id"
 end

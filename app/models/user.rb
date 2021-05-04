@@ -30,11 +30,13 @@ class User < ApplicationRecord
   USER = 'user'.freeze
   ROLES = [USER, ADMIN].freeze
 
-  has_many :own_organizations, foreign_key: 'author_id', class_name: 'Organization'
+  has_many :own_organizations, foreign_key: 'owner_id', class_name: 'Organization'
+  has_many :user_organizations
+  has_many :organizations, through: :user_organizations
 
   validates :first_name, :last_name, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: { minimum: 6, maximum: 16 }
+  validates :password, presence: true, length: { minimum: 6, maximum: 16 }, on: :create
 
   def full_name
     [first_name, last_name].join(' ')
