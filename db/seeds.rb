@@ -11,7 +11,7 @@ users.each do |user|
 end
 puts 'Own Organizations added'
 
-organizations.flutten.each do |organization|
+organizations.flatten.each do |organization|
   members = FactoryBot.create_list(:user, rand(1..5))
 
   members.each do |member|
